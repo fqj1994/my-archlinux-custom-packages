@@ -1,0 +1,16 @@
+sudo: required
+
+cache:
+    directories:
+        - packages
+        - ccache
+
+services:
+    - docker
+
+before_install:
+    - docker build -t buildbot .
+    - mkdir -p packages ccache
+
+script:
+    - docker run -v $(pwd)/packages:/home/packages -v $(pwd)/ccache:/home/buildbot/.ccache buildbot /bin/bash -c "/pkgs/build.sh"
